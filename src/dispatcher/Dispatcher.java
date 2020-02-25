@@ -107,29 +107,26 @@ public class Dispatcher {
 
     private void checkAircrafts() {
 
+        int[] idDeleted = new int[2];
         int deleted = 0;
         // сначала удаляем улетевшие и окончательно прилетевшие (стоящие у терминала)
         Iterator<Map.Entry<Integer, Aircraft>> iter = aircrafts.entrySet().iterator();
         while (iter.hasNext()) {
             Map.Entry<Integer, Aircraft> entry = iter.next();
             if (AirAction.AWAY == entry.getValue().getAirAction()) {
+                idDeleted[0] = entry.getValue().getId();
                 iter.remove();
+                deleted++;
             }
             else if (AirAction.TERMINAL_IN == entry.getValue().getAirAction()) {
+                idDeleted[1] = entry.getValue().getId();
                 iter.remove();
+                deleted++;
             }
         }
 
-        System.out.println("DELETED AIRCRAFTS = " + deleted);
+        System.out.println("DELETED AIRCRAFTS = " + deleted + " | ids = " + idDeleted[0] + ", " + idDeleted[1]);
 
-
-    }
-
-
-    public void addAircrafts(@NotNull List<Aircraft> listAircrafts) {
-        for (Aircraft ac : listAircrafts) {
-            addAircraft(ac);
-        }
     }
 
     public void addAircraft(Aircraft aircraft) {
